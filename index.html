@@ -1,0 +1,1946 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>S.A.M.E LOTO 5/90 — Version 2</title>
+<meta name="description" content="S.A.M.E Loto 5/90 Version 2 — Analyse, Prédiction, Mises"/>
+<meta name="theme-color" content="#080c14"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="SAME LOTO"/>
+<link rel="manifest" href="manifest.json"/>
+<link rel="apple-touch-icon" href="icon-192.png"/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --gold: #f0b429;
+  --gold2: #d99500;
+  --amber: #ff9d3b;
+  --green: #22c55e;
+  --blue: #3b82f6;
+  --red: #ef4444;
+  --bg: #080c14;
+  --bg2: #0e1420;
+  --card: #121a2e;
+  --card2: #1a2440;
+  --card3: #202d4a;
+  --text: #e8f0ff;
+  --muted: #6b7fa8;
+  --border: rgba(240,180,41,0.13);
+  --border2: rgba(255,255,255,0.06);
+  --radius: 20px;
+  --radius-sm: 12px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+/* BG */
+body::before{
+  content:'';position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 90% 55% at 15% -5%,rgba(59,130,246,0.14) 0%,transparent 65%),
+    radial-gradient(ellipse 70% 45% at 85% 105%,rgba(240,180,41,0.10) 0%,transparent 60%),
+    radial-gradient(ellipse 50% 35% at 50% 50%,rgba(255,157,59,0.04) 0%,transparent 70%);
+  pointer-events:none;z-index:0;
+}
+.noise{
+  position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.025;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.wrapper{position:relative;z-index:1;max-width:920px;margin:0 auto;padding:28px 16px 70px;}
+
+/* HEADER */
+header{text-align:center;margin-bottom:32px;padding-bottom:28px;border-bottom:1px solid var(--border);}
+.logo{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(64px,15vw,108px);
+  letter-spacing:12px;
+  background:linear-gradient(135deg,#f0b429 0%,#ff9d3b 40%,#f0b429 80%,#ffe082 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  line-height:1;
+  filter:drop-shadow(0 0 40px rgba(240,180,41,0.4));
+}
+.logo-sub{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(24px,6vw,42px);
+  letter-spacing:12px;color:var(--blue);
+  text-shadow:0 0 24px rgba(59,130,246,0.6);
+  margin-top:-4px;
+}
+.logo-sub2{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(32px,8vw,64px);
+  letter-spacing:10px;
+  background:linear-gradient(135deg,#3b82f6 0%,#60a5fa 50%,#3b82f6 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  text-shadow:none;
+  filter:drop-shadow(0 0 20px rgba(59,130,246,0.5));
+  margin-top:-2px;
+  line-height:1.1;
+}
+.tagline{color:var(--muted);font-size:12px;letter-spacing:3px;text-transform:uppercase;margin-top:10px;}
+
+/* TABS */
+.tabs{display:flex;gap:5px;background:var(--card);border:1px solid var(--border2);border-radius:var(--radius);padding:5px;margin-bottom:22px;}
+.tab{flex:1;padding:10px 4px;border:none;border-radius:14px;background:transparent;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .22s;letter-spacing:.3px;}
+.tab.active{background:linear-gradient(135deg,#f0b429,#d99500);color:#080c14;box-shadow:0 4px 18px rgba(240,180,41,0.35);}
+
+.panel{display:none;} .panel.active{display:block;}
+
+/* CARD */
+.card{background:var(--card);border:1px solid var(--border2);border-radius:var(--radius);padding:22px 18px;margin-bottom:16px;}
+.card-title{font-family:'Bebas Neue',sans-serif;font-size:19px;letter-spacing:2px;color:var(--gold);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+
+/* GRILLE 90 */
+.section-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;}
+.grid-90{
+  display:grid;
+  grid-template-columns:repeat(10,1fr);
+  gap:5px;
+  margin-bottom:16px;
+}
+.nb{
+  aspect-ratio:1;border:1.5px solid rgba(255,255,255,0.07);
+  border-radius:50%;background:var(--card2);
+  color:var(--text);font-family:'DM Sans',sans-serif;
+  font-size:clamp(9px,1.4vw,12px);font-weight:600;
+  cursor:pointer;transition:all .15s;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  position:relative;padding:0;line-height:1;gap:1px;
+}
+.nb-num{font-size:inherit;line-height:1;}
+.nb-temp{font-size:8px;line-height:1;}
+.nb:hover:not(.sel){border-color:var(--gold);color:var(--gold);transform:scale(1.1);}
+.nb.sel{
+  background:linear-gradient(135deg,#f0b429,#d99500);
+  border-color:var(--gold);color:#080c14;
+  transform:scale(1.08);
+  box-shadow:0 0 10px rgba(240,180,41,0.5);
+}
+.nb:disabled,.nb.disabled{opacity:.3;cursor:not-allowed;transform:none!important;}
+
+/* COUNTER */
+.counter-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;}
+.counter-info{font-size:13px;color:var(--muted);}
+.counter-info strong{color:var(--gold);}
+.counter-pills{display:flex;gap:4px;flex-wrap:wrap;}
+.cpill{
+  width:22px;height:22px;border-radius:50%;
+  border:1.5px solid var(--border2);
+  font-size:10px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .18s;color:var(--muted);
+}
+.cpill.on{background:var(--gold);border-color:var(--gold);color:#080c14;box-shadow:0 0 7px rgba(240,180,41,0.5);}
+
+/* SELECTED DISPLAY */
+.sel-display{
+  display:flex;gap:7px;flex-wrap:wrap;align-items:center;
+  min-height:50px;padding:10px 14px;
+  background:var(--bg2);border-radius:var(--radius-sm);
+  border:1px dashed rgba(240,180,41,0.2);margin-bottom:14px;
+}
+.sball{
+  width:36px;height:36px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:12px;
+  background:linear-gradient(135deg,#f0b429,#d99500);color:#080c14;
+  animation:popIn .2s cubic-bezier(.34,1.56,.64,1);
+  box-shadow:0 2px 8px rgba(240,180,41,0.3);
+  cursor:pointer;transition:transform .15s;
+  flex-shrink:0;
+}
+.sball:hover{transform:scale(1.15);}
+.sel-placeholder{color:var(--muted);font-size:13px;font-style:italic;}
+@keyframes popIn{from{transform:scale(0) rotate(-20deg);opacity:0;}to{transform:scale(1) rotate(0);opacity:1;}}
+
+/* BTNs */
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;}
+.btn{flex:1;padding:11px 14px;border:none;border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;min-width:90px;letter-spacing:.2px;}
+.btn-gold{background:linear-gradient(135deg,#f0b429,#d99500);color:#080c14;box-shadow:0 4px 16px rgba(240,180,41,0.28);}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 8px 26px rgba(240,180,41,0.42);}
+.btn-outline{background:transparent;border:1.5px solid var(--border2);color:var(--muted);}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold);}
+.btn-blue{background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff;box-shadow:0 4px 16px rgba(59,130,246,0.28);}
+.btn-blue:hover{transform:translateY(-2px);box-shadow:0 8px 26px rgba(59,130,246,0.42);}
+.btn-red{background:linear-gradient(135deg,#ef4444,#b91c1c);color:#fff;}
+.btn-red:hover{transform:translateY(-2px);}
+.btn-green{background:linear-gradient(135deg,#22c55e,#15803d);color:#fff;box-shadow:0 4px 16px rgba(34,197,94,0.25);}
+.btn-green:hover{transform:translateY(-2px);}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none!important;}
+
+/* GRILLES CONFIG */
+.config-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:var(--bg2);border-radius:var(--radius-sm);padding:14px 16px;margin-bottom:16px;border:1px solid var(--border2);}
+.config-label{font-size:13px;color:var(--muted);font-weight:500;}
+.grilles-select{
+  background:var(--card2);border:1.5px solid var(--border);color:var(--text);
+  padding:8px 14px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;
+  cursor:pointer;outline:none;appearance:none;-webkit-appearance:none;
+  padding-right:30px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23f0b429' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 10px center;
+}
+.grilles-select:focus{border-color:var(--gold);}
+.combo-count-badge{
+  margin-left:auto;
+  background:rgba(240,180,41,0.1);
+  border:1px solid var(--border);
+  border-radius:8px;padding:6px 12px;
+  font-size:12px;color:var(--gold);font-weight:600;
+}
+
+/* MODE SELECTOR */
+.mode-row{display:flex;gap:8px;margin-bottom:16px;}
+.mode-btn{flex:1;padding:10px;border:1.5px solid var(--border2);border-radius:var(--radius-sm);background:var(--card2);color:var(--muted);font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;text-align:center;}
+.mode-btn.active{border-color:var(--blue);background:rgba(59,130,246,0.12);color:#93c5fd;}
+
+/* GRILLES GÉNÉRÉES */
+.grilles-container{display:flex;flex-direction:column;gap:10px;margin-top:16px;}
+.grille-item{
+  background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius-sm);
+  padding:12px 14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  transition:all .3s;
+}
+
+/* Grille gagnante — mise en valeur visuelle selon le rang */
+.grille-item.win-jackpot{
+  background:linear-gradient(135deg,rgba(240,180,41,0.18) 0%,rgba(255,157,59,0.10) 100%);
+  border:2px solid var(--gold);
+  box-shadow:0 0 28px rgba(240,180,41,0.25), inset 0 0 30px rgba(240,180,41,0.05);
+  position:relative; overflow:hidden;
+}
+.grille-item.win-jackpot::before{
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(90deg,transparent,rgba(240,180,41,0.07),transparent);
+  animation:shimmer 2s infinite;
+}
+@keyframes shimmer{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
+.grille-item.win-jackpot .grille-num{color:var(--gold);font-size:18px;}
+
+.grille-item.win-4{
+  background:linear-gradient(135deg,rgba(34,197,94,0.15) 0%,rgba(21,128,61,0.08) 100%);
+  border:2px solid var(--green);
+  box-shadow:0 0 20px rgba(34,197,94,0.2);
+}
+.grille-item.win-4 .grille-num{color:#4ade80;}
+
+.grille-item.win-3{
+  background:linear-gradient(135deg,rgba(34,197,94,0.09) 0%,rgba(21,128,61,0.05) 100%);
+  border:1.5px solid rgba(34,197,94,0.5);
+  box-shadow:0 0 12px rgba(34,197,94,0.12);
+}
+.grille-item.win-3 .grille-num{color:#86efac;}
+
+.grille-item.win-2{
+  background:linear-gradient(135deg,rgba(59,130,246,0.1) 0%,rgba(37,99,235,0.05) 100%);
+  border:1.5px solid rgba(59,130,246,0.4);
+  box-shadow:0 0 10px rgba(59,130,246,0.12);
+}
+.grille-item.win-2 .grille-num{color:#93c5fd;}
+
+.grille-item.win-1{
+  border:1.5px solid rgba(255,255,255,0.15);
+  background:rgba(255,255,255,0.04);
+}
+
+.grille-item.lose{
+  opacity:.6;
+  border:1px solid rgba(239,68,68,0.12);
+}
+
+/* Badge trophée affiché à gauche des grilles gagnantes */
+.grille-trophy{
+  font-size:20px;flex-shrink:0;
+  animation:popIn .4s cubic-bezier(.34,1.56,.64,1);
+}
+
+.grille-num{
+  font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--muted);
+  width:28px;flex-shrink:0;
+}
+.grille-balls{display:flex;gap:6px;flex-wrap:wrap;flex:1;}
+.gball{
+  width:34px;height:34px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;
+  background:linear-gradient(135deg,#f0b429,#d99500);color:#080c14;
+  box-shadow:0 2px 6px rgba(240,180,41,0.25);
+}
+.gball.highlight{
+  background:radial-gradient(circle at 35% 30%,#fff9c4,#f0b429 50%,#a06800);
+  box-shadow:0 0 16px rgba(240,180,41,0.7);
+  transform:scale(1.14);
+  border:2px solid rgba(255,255,255,0.4);
+}
+.grille-actions{display:flex;gap:6px;margin-left:auto;}
+.icon-btn{
+  width:30px;height:30px;border:1.5px solid var(--border2);
+  border-radius:8px;background:transparent;color:var(--muted);
+  cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;
+  transition:all .15s;
+}
+.icon-btn:hover{border-color:var(--gold);color:var(--gold);}
+
+/* TIRAGE RÉSULTAT dans le générateur */
+.tirage-result-wrap{margin-top:18px;}
+.tirage-drawn{
+  display:flex;gap:8px;flex-wrap:wrap;justify-content:center;
+  margin:16px 0;
+}
+.drawn-ball{
+  width:52px;height:52px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Bebas Neue',sans-serif;font-size:19px;
+  animation:rollIn .45s cubic-bezier(.34,1.56,.64,1) both;
+}
+.drawn-ball.gb{
+  background:radial-gradient(circle at 35% 30%,#fff9c4,#f0b429 50%,#8a6200);
+  color:#3d2800;
+  box-shadow:0 6px 18px rgba(240,180,41,0.5),inset 0 -3px 5px rgba(0,0,0,0.2);
+}
+.drawn-ball.matched{box-shadow:0 0 0 3px var(--green),0 6px 18px rgba(34,197,94,0.45),inset 0 -3px 5px rgba(0,0,0,0.2);}
+@keyframes rollIn{from{transform:translateY(-36px) scale(0.3) rotate(-90deg);opacity:0;}to{transform:translateY(0) scale(1) rotate(0);opacity:1;}}
+
+/* Résultat grille */
+.grille-result{
+  display:flex;align-items:center;gap:8px;
+  padding:8px 12px;border-radius:8px;
+  font-size:12px;font-weight:600;
+}
+.gr-jackpot{background:rgba(240,180,41,0.15);border:1px solid var(--gold);color:var(--gold);}
+.gr-win4{background:rgba(34,197,94,0.15);border:1px solid var(--green);color:#4ade80;}
+.gr-win3{background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.4);color:#86efac;}
+.gr-win2{background:rgba(59,130,246,0.12);border:1px solid rgba(59,130,246,0.4);color:#93c5fd;}
+.gr-win1{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);color:var(--muted);}
+.gr-lose{background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.2);color:#fca5a5;}
+
+/* Summary banner */
+.summary-banner{
+  background:var(--card2);border:1px solid var(--border);
+  border-radius:var(--radius-sm);padding:16px;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:10px;
+  margin-bottom:14px;
+}
+.sumb{text-align:center;}
+.sumb .v{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--gold);line-height:1;}
+.sumb .l{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:3px;}
+
+/* History */
+.history-list{display:flex;flex-direction:column;gap:10px;}
+.history-item{background:var(--bg2);border:1px solid var(--border2);border-radius:14px;padding:14px 16px;}
+.history-meta{font-size:11px;color:var(--muted);margin-bottom:8px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px;}
+.h-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap;}
+.h-label{font-size:10px;color:var(--muted);width:55px;flex-shrink:0;text-transform:uppercase;letter-spacing:1px;}
+.h-balls{display:flex;gap:4px;flex-wrap:wrap;}
+.hb{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;}
+.hb.m{background:linear-gradient(135deg,#f0b429,#d99500);color:#080c14;}
+.hb.hit{box-shadow:0 0 0 2px var(--green);}
+.history-grilles{margin-top:10px;display:flex;flex-direction:column;gap:6px;}
+.hg-item{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.hg-label{font-size:10px;color:var(--muted);width:44px;flex-shrink:0;}
+
+/* Stats */
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;}
+.stat-card{background:var(--bg2);border:1px solid var(--border2);border-radius:14px;padding:16px;text-align:center;}
+.stat-card .v{font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--gold);line-height:1;}
+.stat-card .l{font-size:11px;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:1px;}
+.freq-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:7px;}
+.freq-num{width:26px;font-weight:700;color:var(--gold);text-align:right;font-size:12px;}
+.freq-bar-bg{flex:1;height:8px;background:rgba(255,255,255,0.05);border-radius:4px;overflow:hidden;}
+.freq-bar{height:100%;background:linear-gradient(90deg,#f0b429,#d99500);border-radius:4px;transition:width .6s ease;}
+.freq-count{width:22px;font-size:11px;color:var(--muted);}
+
+/* Empty state */
+.empty{text-align:center;padding:32px 20px;color:var(--muted);font-size:13px;}
+.empty .icon{font-size:40px;margin-bottom:10px;}
+
+/* Confetti */
+.confetti-wrap{position:fixed;inset:0;pointer-events:none;z-index:999;overflow:hidden;}
+.confetto{position:absolute;width:8px;height:8px;top:-16px;border-radius:2px;animation:fall linear forwards;}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:0;}}
+
+/* Scroll */
+.grilles-scroll{max-height:420px;overflow-y:auto;padding-right:4px;}
+.grilles-scroll::-webkit-scrollbar{width:4px;}
+.grilles-scroll::-webkit-scrollbar-track{background:var(--bg2);}
+.grilles-scroll::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+
+/* Pagination */
+.pagination{display:flex;justify-content:center;gap:6px;margin-top:14px;flex-wrap:wrap;}
+.page-btn{width:32px;height:32px;border:1.5px solid var(--border2);border-radius:8px;background:transparent;color:var(--muted);font-size:12px;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;}
+.page-btn.active{border-color:var(--gold);background:rgba(240,180,41,0.12);color:var(--gold);}
+.page-btn:hover:not(.active){border-color:var(--gold);color:var(--gold);}
+
+/* Export btn */
+.export-bar{display:flex;gap:8px;margin-top:14px;}
+
+/* ===== SAISIE TIRAGE OFFICIEL ===== */
+.input-balls-row{
+  display:flex;gap:10px;justify-content:center;align-items:center;
+  margin:20px 0;flex-wrap:wrap;
+}
+.ball-input-wrap{
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+}
+.ball-input-wrap .ball-label{
+  font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;
+}
+.ball-input{
+  width:58px;height:58px;border-radius:50%;
+  border:2.5px solid rgba(255,255,255,0.1);
+  background:var(--card2);
+  color:var(--text);
+  font-family:'Bebas Neue',sans-serif;
+  font-size:26px;
+  text-align:center;
+  outline:none;
+  transition:all .2s;
+  caret-color:var(--gold);
+  -moz-appearance:textfield;
+}
+.ball-input::-webkit-outer-spin-button,
+.ball-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+.ball-input:focus{
+  border-color:var(--gold);
+  box-shadow:0 0 0 3px rgba(240,180,41,0.2), 0 0 20px rgba(240,180,41,0.15);
+  background:var(--card3);
+}
+.ball-input.filled{
+  background:radial-gradient(circle at 35% 30%,#fff9c4,#f0b429 50%,#8a6200);
+  border-color:var(--gold);
+  color:#3d2800;
+  box-shadow:0 4px 16px rgba(240,180,41,0.45);
+}
+.ball-input.error{
+  border-color:var(--red);
+  box-shadow:0 0 0 3px rgba(239,68,68,0.2);
+  animation:shake .3s ease;
+}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+
+.sep-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--muted);opacity:.4;margin-top:16px;
+}
+
+.saisie-error{
+  text-align:center;font-size:12px;color:var(--red);
+  min-height:18px;margin-bottom:8px;
+}
+.saisie-success{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  padding:10px;border-radius:10px;
+  background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);
+  font-size:13px;color:#4ade80;margin-bottom:14px;
+  animation:fadeUp .3s ease;
+}
+
+/* COMPTEUR CUMULATIF */
+.cumul-section{margin-top:4px;}
+.cumul-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:14px;flex-wrap:wrap;gap:8px;
+}
+.cumul-total-badge{
+  background:rgba(240,180,41,0.1);border:1px solid var(--border);
+  border-radius:8px;padding:5px 12px;font-size:12px;color:var(--gold);font-weight:600;
+}
+.cumul-grid{
+  display:grid;
+  grid-template-columns:repeat(9,1fr);
+  gap:5px;
+}
+.cumul-cell{
+  display:flex;flex-direction:column;align-items:center;
+  background:var(--bg2);border:1px solid var(--border2);
+  border-radius:10px;padding:6px 4px;
+  transition:all .3s;cursor:default;
+  position:relative;
+}
+.cumul-cell:hover{border-color:rgba(240,180,41,0.3);}
+
+/* 🔥 CHAUD — top 10 */
+.cumul-cell.hot{
+  background:rgba(240,80,30,0.15);
+  border-color:rgba(240,80,30,0.5);
+  box-shadow:0 0 8px rgba(240,80,30,0.2);
+}
+.cumul-cell.hot .cc-num{color:#ff6b35;}
+.cumul-cell.hot .cc-count{color:#ff6b35;}
+.cumul-cell.hot .cc-bar{background:linear-gradient(90deg,#ff6b35,#ff3d00);}
+.cumul-cell.hot .cc-temp::before{content:'🔥';font-size:8px;}
+
+/* 🌤 TIÈDE — top 11–25 */
+.cumul-cell.lukewarm{
+  background:rgba(240,180,41,0.10);
+  border-color:rgba(240,180,41,0.35);
+}
+.cumul-cell.lukewarm .cc-num{color:var(--gold);}
+.cumul-cell.lukewarm .cc-count{color:var(--gold);}
+.cumul-cell.lukewarm .cc-bar{background:linear-gradient(90deg,#f0b429,#ff9d3b);}
+.cumul-cell.lukewarm .cc-temp::before{content:'🌤';font-size:8px;}
+
+/* ❄ FROID — sortis mais bas */
+.cumul-cell.cold{
+  background:rgba(59,130,246,0.08);
+  border-color:rgba(59,130,246,0.25);
+}
+.cumul-cell.cold .cc-num{color:#7eb3f7;}
+.cumul-cell.cold .cc-count{color:#7eb3f7;}
+.cumul-cell.cold .cc-bar{background:linear-gradient(90deg,#3b82f6,#60a5fa);}
+.cumul-cell.cold .cc-temp::before{content:'❄';font-size:8px;}
+.cumul-cell .cc-num{
+  font-family:'Bebas Neue',sans-serif;font-size:15px;color:var(--text);line-height:1;
+}
+.cumul-cell .cc-count{
+  font-size:10px;font-weight:700;color:var(--muted);margin-top:2px;
+}
+.cumul-cell.has-count .cc-count{color:var(--gold);}
+.cumul-cell .cc-bar-wrap{
+  width:100%;height:3px;background:rgba(255,255,255,0.05);
+  border-radius:2px;overflow:hidden;margin-top:3px;
+}
+.cumul-cell .cc-bar{
+  height:100%;background:linear-gradient(90deg,#f0b429,#ff9d3b);
+  border-radius:2px;transition:width .5s ease;
+}
+.cumul-cell.just-added{
+  animation:cellPop .4s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes cellPop{from{transform:scale(0.85);}to{transform:scale(1);}}
+
+.view-toggle{display:flex;gap:6px;margin-bottom:12px;}
+.vtbtn{flex:1;padding:8px;border:1.5px solid var(--border2);border-radius:10px;background:var(--card2);color:var(--muted);font-size:11px;font-weight:600;cursor:pointer;transition:all .2s;}
+.vtbtn.active{border-color:var(--gold);background:rgba(240,180,41,0.1);color:var(--gold);}
+
+.top-list{display:flex;flex-direction:column;gap:6px;}
+.top-item{
+  display:flex;align-items:center;gap:10px;
+  background:var(--bg2);border:1px solid var(--border2);
+  border-radius:10px;padding:8px 12px;
+}
+.top-rank{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--muted);width:24px;text-align:center;}
+.top-ball{
+  width:36px;height:36px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#fff9c4,#f0b429 50%,#8a6200);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Bebas Neue',sans-serif;font-size:15px;color:#3d2800;
+  box-shadow:0 2px 8px rgba(240,180,41,0.35);
+}
+.top-bar-wrap{flex:1;height:8px;background:rgba(255,255,255,0.05);border-radius:4px;overflow:hidden;}
+.top-bar{height:100%;background:linear-gradient(90deg,#f0b429,#ff9d3b);border-radius:4px;transition:width .5s;}
+.top-count{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--gold);min-width:28px;text-align:right;}
+
+/* ===== ÉCARTS ===== */
+.ecart-legend{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+.ecart-badge{font-size:11px;padding:4px 10px;border-radius:20px;font-weight:600;}
+.ecart-badge.hot{background:rgba(34,197,94,0.15);color:#4ade80;border:1px solid rgba(34,197,94,0.3);}
+.ecart-badge.warm{background:rgba(240,180,41,0.15);color:var(--gold);border:1px solid var(--border);}
+.ecart-badge.late{background:rgba(251,146,60,0.15);color:#fb923c;border:1px solid rgba(251,146,60,0.3);}
+.ecart-badge.overdue{background:rgba(239,68,68,0.15);color:#f87171;border:1px solid rgba(239,68,68,0.3);}
+.ecart-grid{display:grid;grid-template-columns:repeat(9,1fr);gap:5px;}
+.ecart-cell{
+  display:flex;flex-direction:column;align-items:center;
+  border-radius:10px;padding:5px 2px;
+  border:1px solid var(--border2);background:var(--bg2);
+  transition:all .2s;
+}
+.ecart-cell .ec-num{font-family:'Bebas Neue',sans-serif;font-size:14px;line-height:1;}
+.ecart-cell .ec-val{font-size:9px;font-weight:700;margin-top:2px;}
+.ecart-cell.ec-hot{background:rgba(34,197,94,0.1);border-color:rgba(34,197,94,0.3);}
+.ecart-cell.ec-hot .ec-num{color:#4ade80;} .ecart-cell.ec-hot .ec-val{color:#4ade80;}
+.ecart-cell.ec-warm{background:rgba(240,180,41,0.08);border-color:rgba(240,180,41,0.25);}
+.ecart-cell.ec-warm .ec-num{color:var(--gold);} .ecart-cell.ec-warm .ec-val{color:var(--gold);}
+.ecart-cell.ec-late{background:rgba(251,146,60,0.1);border-color:rgba(251,146,60,0.3);}
+.ecart-cell.ec-late .ec-num{color:#fb923c;} .ecart-cell.ec-late .ec-val{color:#fb923c;}
+.ecart-cell.ec-overdue{background:rgba(239,68,68,0.12);border-color:rgba(239,68,68,0.35);box-shadow:0 0 8px rgba(239,68,68,0.15);}
+.ecart-cell.ec-overdue .ec-num{color:#f87171;} .ecart-cell.ec-overdue .ec-val{color:#f87171;}
+.ecart-cell.ec-never{opacity:.35;}
+
+.ecart-top-item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 12px;border-radius:10px;margin-bottom:6px;
+  background:var(--bg2);border:1px solid var(--border2);
+}
+.et-rank{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--muted);width:22px;}
+.et-ball{
+  width:36px;height:36px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Bebas Neue',sans-serif;font-size:15px;
+  background:radial-gradient(circle at 35% 30%,#ffd,#f87171 55%,#900);
+  color:#fff;box-shadow:0 2px 8px rgba(239,68,68,0.3);
+}
+.et-info{flex:1;}
+.et-info .et-num{font-weight:700;font-size:14px;color:var(--text);}
+.et-info .et-sub{font-size:11px;color:var(--muted);}
+.et-ecart{font-family:'Bebas Neue',sans-serif;font-size:26px;color:#f87171;}
+
+/* ===== MISES ===== */
+.mise-form{background:var(--bg2);border-radius:var(--radius-sm);padding:16px;border:1px solid var(--border2);}
+.mise-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;}
+.mise-label{font-size:13px;color:var(--text);font-weight:500;}
+.mise-input-wrap{display:flex;align-items:center;gap:8px;}
+.mise-input{
+  width:110px;padding:8px 12px;
+  background:var(--card2);border:1.5px solid var(--border);
+  border-radius:8px;color:var(--text);
+  font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;
+  text-align:right;outline:none;
+}
+.mise-input:focus{border-color:var(--gold);}
+.mise-unit{font-size:12px;color:var(--muted);min-width:36px;}
+.gains-table{display:flex;flex-direction:column;gap:6px;}
+.gain-row{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 14px;border-radius:10px;
+  background:var(--bg2);border:1px solid var(--border2);
+}
+.gain-row.jackpot{background:rgba(240,180,41,0.1);border-color:var(--border);}
+.gain-row.rank1{background:rgba(34,197,94,0.08);border-color:rgba(34,197,94,0.25);}
+.gain-icon{font-size:18px;width:24px;}
+.gain-label{flex:1;font-size:13px;color:var(--text);}
+.gain-paires{font-size:11px;color:var(--muted);width:60px;text-align:center;}
+.gain-amount{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--gold);}
+
+/* ===== PRÉDICTION ===== */
+.predict-tabs{display:flex;gap:6px;margin-bottom:14px;}
+.ptab{flex:1;padding:9px;border:1.5px solid var(--border2);border-radius:10px;background:var(--card2);color:var(--muted);font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;}
+.ptab.active{border-color:var(--blue);background:rgba(59,130,246,0.12);color:#93c5fd;}
+.predict-desc{font-size:12px;color:var(--muted);margin-bottom:14px;padding:10px 12px;background:var(--bg2);border-radius:8px;border:1px solid var(--border2);line-height:1.6;}
+.predict-balls{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;min-height:52px;align-items:center;margin:14px 0;}
+.pball{
+  width:46px;height:46px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Bebas Neue',sans-serif;font-size:17px;
+  animation:popIn .3s cubic-bezier(.34,1.56,.64,1) both;
+  box-shadow:0 4px 14px rgba(99,102,241,0.4);
+  background:radial-gradient(circle at 35% 30%,#c7d2fe,#6366f1 55%,#3730a3);
+  color:#fff;
+}
+.pball.suggested{
+  background:radial-gradient(circle at 35% 30%,#ffd,#f0b429 55%,#8a6200);
+  color:#3d2800;
+  box-shadow:0 4px 14px rgba(240,180,41,0.45);
+}
+@media(max-width:540px){
+  .grid-90{grid-template-columns:repeat(9,1fr);gap:4px;}
+  .ecart-grid{grid-template-columns:repeat(9,1fr);gap:4px;}
+  .stats-grid{grid-template-columns:1fr;}
+  .summary-banner{grid-template-columns:1fr 1fr;}
+  .nb{font-size:9px;}
+  .predict-tabs{flex-direction:column;}
+}
+</style>
+</head>
+<body>
+<div class="noise"></div>
+<div class="confetti-wrap" id="confetti"></div>
+<div class="wrapper">
+
+  <header>
+    <div class="logo">S.A.M.E</div>
+    <div class="logo-sub2">LOTO 5/90</div>
+    <div style="display:inline-block;background:linear-gradient(135deg,#3b82f6,#6366f1);color:#fff;font-size:11px;font-weight:700;padding:3px 12px;border-radius:20px;letter-spacing:2px;margin-top:6px;">VERSION 2</div>
+    <div class="tagline" style="margin-top:6px;">✦ Analyse · Prédiction · Mises ✦</div>
+  </header>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('gen',this)">🎲 Générateur</button>
+    <button class="tab" onclick="switchTab('tirage',this)">🎰 Tirage</button>
+    <button class="tab" onclick="switchTab('cumul',this)">🔢 Compteur</button>
+    <button class="tab" onclick="switchTab('ecart',this)">📐 Écarts</button>
+    <button class="tab" onclick="switchTab('mise',this)">💰 Mises</button>
+    <button class="tab" onclick="switchTab('predict',this)">🤖 Prédiction</button>
+    <button class="tab" onclick="switchTab('history',this)">📋 Historique</button>
+    <button class="tab" onclick="switchTab('stats',this)">📊 Stats</button>
+  </div>
+
+  <!-- ===== GÉNÉRATEUR ===== -->
+  <div class="panel active" id="panel-gen">
+
+    <div class="card">
+      <div class="card-title">🎯 Choisissez vos numéros (10 à 50)</div>
+      <div class="counter-row">
+        <div class="counter-info">
+          <strong id="sel-count">0</strong> / 50 numéros sélectionnés
+          <span id="min-warn" style="color:var(--red);margin-left:8px;font-size:11px;display:none">⚠ min. 10</span>
+        </div>
+        <div style="display:flex;gap:6px;">
+          <button class="btn btn-outline" style="padding:6px 12px;font-size:12px;min-width:auto" onclick="clearSel()">🗑 Effacer</button>
+          <button class="btn btn-gold" style="padding:6px 12px;font-size:12px;min-width:auto" onclick="randomSel()">🎲 Aléatoire</button>
+        </div>
+      </div>
+      <div class="section-label">Grille 1 à 90 — cliquez pour sélectionner / désélectionner</div>
+      <div class="grid-90" id="main-grid"></div>
+      <div class="sel-display" id="sel-display">
+        <span class="sel-placeholder">Cliquez sur vos numéros (min. 5, max. 25)…</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">⚙️ Configuration des grilles</div>
+      <div class="config-row">
+        <div class="config-label">Nombre de grilles à générer :</div>
+        <select class="grilles-select" id="nb-grilles-select" onchange="updateComboInfo()">
+          <option value="1">1 grille</option>
+          <option value="2">2 grilles</option>
+          <option value="3">3 grilles</option>
+          <option value="4">4 grilles</option>
+          <option value="5" selected>5 grilles</option>
+          <option value="6">6 grilles</option>
+          <option value="7">7 grilles</option>
+          <option value="8">8 grilles</option>
+          <option value="9">9 grilles</option>
+          <option value="10">10 grilles</option>
+          <option value="15">15 grilles</option>
+          <option value="20">20 grilles</option>
+          <option value="25">25 grilles</option>
+          <option value="30">30 grilles</option>
+          <option value="50">50 grilles</option>
+          <option value="100">100 grilles</option>
+        </select>
+        <div class="combo-count-badge" id="combo-badge">Combos possibles: —</div>
+      </div>
+
+      <div class="section-label" style="margin-bottom:10px">Mode de génération :</div>
+      <div class="mode-row">
+        <button class="mode-btn active" id="mode-random" onclick="setMode('random')">🎲 Aléatoire<br><small style="font-weight:400;opacity:.7">Tirage au hasard</small></button>
+        <button class="mode-btn" id="mode-balanced" onclick="setMode('balanced')">⚖️ Équilibré<br><small style="font-weight:400;opacity:.7">Répartition optimale</small></button>
+        <button class="mode-btn" id="mode-unique" onclick="setMode('unique')">🔀 Unique<br><small style="font-weight:400;opacity:.7">Sans répétition max</small></button>
+      </div>
+
+      <button class="btn btn-blue" id="gen-btn" onclick="generateGrids()" disabled style="width:100%;font-size:15px;padding:14px;margin-top:4px;">
+        ✨ Générer les grilles
+      </button>
+    </div>
+
+    <div id="grilles-result-section" style="display:none">
+      <div class="card">
+        <div class="card-title">🎟 Grilles générées</div>
+        <div class="summary-banner" id="gen-summary"></div>
+        <div class="export-bar">
+          <button class="btn btn-outline" style="flex:none;padding:8px 14px;font-size:12px" onclick="copyAllGrids()">📋 Copier tout</button>
+          <button class="btn btn-outline" style="flex:none;padding:8px 14px;font-size:12px" onclick="shuffleGrids()">🔀 Mélanger</button>
+          <button class="btn btn-gold" style="flex:none;padding:8px 14px;font-size:12px" onclick="generateGrids()">↩ Régénérer</button>
+        </div>
+        <div class="grilles-scroll" id="grilles-list"></div>
+        <div class="pagination" id="pagination"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TIRAGE ===== -->
+  <div class="panel" id="panel-tirage">
+
+    <!-- Saisie résultat officiel -->
+    <div class="card">
+      <div class="card-title">📝 Résultat du tirage officiel</div>
+      <p style="color:var(--muted);font-size:13px;margin-bottom:18px;">
+        Saisissez les 5 numéros officiels tirés (1–90). Le curseur passe automatiquement à la case suivante après 2 chiffres.
+      </p>
+
+      <div class="input-balls-row" id="input-balls-row">
+        <div class="ball-input-wrap">
+          <div class="ball-label">N° 1</div>
+          <input class="ball-input" id="bi0" type="number" min="1" max="90" maxlength="2" placeholder="—" autocomplete="off" inputmode="numeric"/>
+        </div>
+        <div class="sep-dot"></div>
+        <div class="ball-input-wrap">
+          <div class="ball-label">N° 2</div>
+          <input class="ball-input" id="bi1" type="number" min="1" max="90" maxlength="2" placeholder="—" autocomplete="off" inputmode="numeric"/>
+        </div>
+        <div class="sep-dot"></div>
+        <div class="ball-input-wrap">
+          <div class="ball-label">N° 3</div>
+          <input class="ball-input" id="bi2" type="number" min="1" max="90" maxlength="2" placeholder="—" autocomplete="off" inputmode="numeric"/>
+        </div>
+        <div class="sep-dot"></div>
+        <div class="ball-input-wrap">
+          <div class="ball-label">N° 4</div>
+          <input class="ball-input" id="bi3" type="number" min="1" max="90" maxlength="2" placeholder="—" autocomplete="off" inputmode="numeric"/>
+        </div>
+        <div class="sep-dot"></div>
+        <div class="ball-input-wrap">
+          <div class="ball-label">N° 5</div>
+          <input class="ball-input" id="bi4" type="number" min="1" max="90" maxlength="2" placeholder="—" autocomplete="off" inputmode="numeric"/>
+        </div>
+      </div>
+
+      <div class="saisie-error" id="saisie-error"></div>
+
+      <div class="btn-row">
+        <button class="btn btn-outline" onclick="clearSaisie()">🗑 Effacer</button>
+        <button class="btn btn-gold" id="valider-btn" onclick="validerTirage()" disabled>✅ Valider & Vérifier</button>
+      </div>
+    </div>
+
+    <!-- Résultats -->
+    <div id="tirage-result-wrap" style="display:none">
+      <div class="card">
+        <div class="card-title">🎯 Numéros officiels</div>
+        <div class="tirage-drawn" id="tirage-drawn-balls"></div>
+        <div id="tirage-grilles-preview" style="margin-bottom:12px;font-size:13px;color:var(--muted);"></div>
+        <div class="grilles-container" id="tirage-grilles-results"></div>
+        <div class="summary-banner" id="tirage-summary" style="margin-top:16px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== COMPTEUR CUMULATIF ===== -->
+  <div class="panel" id="panel-cumul">
+    <div class="card">
+      <div class="card-title">🔢 Compteur cumulatif des tirages officiels</div>
+      <p style="color:var(--muted);font-size:13px;margin-bottom:16px;">
+        Suivi de la fréquence de chaque numéro (1–90) sur tous les tirages officiels saisis.
+      </p>
+
+      <div class="cumul-header">
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <div class="view-toggle" style="margin-bottom:0">
+            <button class="vtbtn active" id="vt-grille" onclick="setCumulView('grille')">🔲 Grille 90</button>
+            <button class="vtbtn" id="vt-top" onclick="setCumulView('top')">🏆 Top 20</button>
+          </div>
+        </div>
+        <div class="cumul-total-badge" id="cumul-total-badge">0 tirage(s) officiel(s)</div>
+      </div>
+
+      <!-- Vue grille -->
+      <div id="cumul-view-grille">
+        <div class="cumul-grid" id="cumul-grid"></div>
+        <div style="display:flex;gap:14px;margin-top:12px;flex-wrap:wrap;">
+          <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted)">
+            <span>🔥</span> Chaud (top 10)
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted)">
+            <span>🌤</span> Tiède (top 11–25)
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted)">
+            <span>❄</span> Froid (peu sorti)
+          </div>
+        </div>
+      </div>
+
+      <!-- Vue top -->
+      <div id="cumul-view-top" style="display:none">
+        <div class="top-list" id="cumul-top-list"></div>
+      </div>
+
+      <div style="margin-top:18px;display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="btn btn-outline" onclick="exportCumul()" style="flex:none;padding:9px 14px;font-size:12px">📋 Copier résumé</button>
+        <button class="btn btn-red" onclick="resetCumul()" style="flex:none;padding:9px 14px;font-size:12px">🗑 Réinitialiser</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== HISTORIQUE ===== -->
+  <div class="panel" id="panel-history">
+    <div class="card">
+      <div class="card-title">📋 Historique</div>
+      <div class="history-list" id="history-list">
+        <div class="empty"><div class="icon">🎱</div>Aucun tirage encore.</div>
+      </div>
+      <div style="margin-top:14px;">
+        <button class="btn btn-red" onclick="clearHistory()" style="width:100%">🗑 Effacer l'historique</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== STATS ===== -->
+  <div class="panel" id="panel-stats">
+    <div class="card">
+      <div class="card-title">📊 Statistiques</div>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="v" id="st-sessions">0</div><div class="l">Sessions</div></div>
+        <div class="stat-card"><div class="v" id="st-grilles">0</div><div class="l">Grilles jouées</div></div>
+        <div class="stat-card"><div class="v" id="st-wins">0</div><div class="l">Grilles gagnantes</div></div>
+        <div class="stat-card"><div class="v" id="st-best">—</div><div class="l">Meilleur résultat</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">🔢 Numéros les plus fréquents (tirages)</div>
+      <div id="freq-list"><div class="empty"><div class="icon">📈</div>Jouez pour voir les fréquences !</div></div>
+    </div>
+  </div>
+
+  <!-- ===== ÉCARTS ===== -->
+  <div class="panel" id="panel-ecart">
+    <div class="card">
+      <div class="card-title">📐 Analyse des Écarts</div>
+      <p style="color:var(--muted);font-size:13px;margin-bottom:16px;">
+        L'écart indique depuis combien de tirages un numéro n'est pas sorti. Plus l'écart est grand, plus le numéro est "en retard".
+      </p>
+      <div id="ecart-empty" class="empty"><div class="icon">📐</div>Saisissez au moins 2 tirages officiels pour voir les écarts.</div>
+      <div id="ecart-content" style="display:none">
+        <div class="ecart-legend">
+          <span class="ecart-badge hot">🔥 Sorti récemment</span>
+          <span class="ecart-badge warm">⏳ Écart moyen</span>
+          <span class="ecart-badge late">⚠️ En retard</span>
+          <span class="ecart-badge overdue">🚨 Très en retard</span>
+        </div>
+        <div class="ecart-grid" id="ecart-grid"></div>
+        <div class="card" style="margin-top:14px;padding:16px;">
+          <div class="card-title" style="font-size:16px">🏆 Top 10 numéros les plus en retard</div>
+          <div id="ecart-top"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MISES ===== -->
+  <div class="panel" id="panel-mise">
+    <div class="card">
+      <div class="card-title">💰 Calcul des Mises</div>
+      <p style="color:var(--muted);font-size:13px;margin-bottom:18px;">
+        Calculez le coût total de vos grilles et estimez vos gains potentiels selon le rang.
+      </p>
+
+      <div class="mise-form">
+        <div class="mise-row">
+          <label class="mise-label">Mise par grille (FCFA)</label>
+          <div class="mise-input-wrap">
+            <input type="number" id="mise-par-grille" value="200" min="100" step="100" class="mise-input"/>
+            <span class="mise-unit">FCFA</span>
+          </div>
+        </div>
+        <div class="mise-row">
+          <label class="mise-label">Nombre de grilles</label>
+          <div class="mise-input-wrap">
+            <input type="number" id="mise-nb-grilles" value="5" min="1" max="100" class="mise-input" id="mise-nb"/>
+            <span class="mise-unit">grilles</span>
+          </div>
+        </div>
+        <button class="btn btn-gold" onclick="calculerMise()" style="width:100%;margin-top:8px">🧮 Calculer</button>
+      </div>
+
+      <div id="mise-result" style="display:none;margin-top:18px">
+        <div class="summary-banner" id="mise-summary"></div>
+        <div style="margin-top:14px">
+          <div class="card-title" style="font-size:15px;margin-bottom:12px">🏆 Gains potentiels par rang</div>
+          <div class="gains-table" id="gains-table"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PRÉDICTION ===== -->
+  <div class="panel" id="panel-predict">
+    <div class="card">
+      <div class="card-title">🤖 Prédiction Intelligente</div>
+      <p style="color:var(--muted);font-size:13px;margin-bottom:16px;">
+        Analyse l'historique des tirages officiels pour suggérer les numéros les plus probables selon 3 algorithmes différents.
+      </p>
+      <div id="predict-empty" class="empty"><div class="icon">🤖</div>Saisissez au moins 5 tirages officiels pour activer la prédiction.</div>
+      <div id="predict-content" style="display:none">
+        <div class="predict-tabs">
+          <button class="ptab active" id="pt-freq" onclick="setPredictMode('freq',this)">📊 Fréquence</button>
+          <button class="ptab" id="pt-ecart" onclick="setPredictMode('ecart',this)">📐 Écarts</button>
+          <button class="ptab" id="pt-mix" onclick="setPredictMode('mix',this)">⚡ Mixte</button>
+        </div>
+        <div class="predict-desc" id="predict-desc"></div>
+        <div class="predict-balls" id="predict-balls"></div>
+        <button class="btn btn-blue" onclick="runPredict()" style="width:100%;margin-top:14px;font-size:14px;padding:13px">
+          🔮 Générer la prédiction
+        </button>
+        <div id="predict-grilles" style="margin-top:16px"></div>
+        <div style="margin-top:14px;padding:12px;background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.2);border-radius:12px;">
+          <p style="font-size:11px;color:#fca5a5;line-height:1.6">
+            ⚠️ <strong>Avertissement :</strong> Le loto est un jeu de hasard pur. Les prédictions sont basées sur des statistiques historiques et ne garantissent aucun gain. Jouez de façon responsable.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ========== STATE ==========
+let selected = [];
+let generatedGrids = [];
+let currentMode = 'random';
+let currentPage = 0;
+const PAGE_SIZE = 10;
+let history = JSON.parse(localStorage.getItem('loto590v2_history') || '[]');
+
+// ========== GRID BUILD ==========
+function buildGrid() {
+  const mg = document.getElementById('main-grid');
+  mg.innerHTML = '';
+  for (let i = 1; i <= 90; i++) {
+    const b = document.createElement('button');
+    b.className = 'nb'; b.id = 'n' + i;
+    b.innerHTML = '<span class="nb-num">' + i + '</span><span class="nb-temp"></span>';
+    b.onclick = () => toggle(i);
+    mg.appendChild(b);
+  }
+}
+
+function refreshGridTemps() {
+  const counts = Object.entries(cumulData).map(([n,c]) => ({n:parseInt(n),c}));
+  const sorted = [...counts].sort((a,b) => b.c - a.c);
+  const top10 = new Set(sorted.slice(0,10).map(x=>x.n));
+  const top25 = new Set(sorted.slice(0,25).map(x=>x.n));
+  for (let i = 1; i <= 90; i++) {
+    const b = document.getElementById('n' + i);
+    if (!b) continue;
+    const t = b.querySelector('.nb-temp');
+    if (!t) continue;
+    const cnt = cumulData[i] || 0;
+    if (cnt === 0) { t.textContent = ''; return; }
+    if (top10.has(i))      t.textContent = '🔥';
+    else if (top25.has(i)) t.textContent = '🌤';
+    else                   t.textContent = '❄';
+  }
+}
+
+function toggle(n) {
+  if (selected.includes(n)) {
+    selected = selected.filter(x => x !== n);
+    document.getElementById('n' + n).classList.remove('sel');
+  } else {
+    if (selected.length >= 50) return;
+    selected.push(n);
+    document.getElementById('n' + n).classList.add('sel');
+  }
+  updateSelDisplay();
+}
+
+function updateSelDisplay() {
+  const sorted = [...selected].sort((a, b) => a - b);
+  const d = document.getElementById('sel-display');
+  d.innerHTML = '';
+  if (sorted.length === 0) {
+    d.innerHTML = '<span class="sel-placeholder">Cliquez sur vos numéros (min. 10, max. 50)…</span>';
+  } else {
+    sorted.forEach(n => {
+      const el = document.createElement('div');
+      el.className = 'sball'; el.textContent = n;
+      el.title = 'Cliquer pour retirer';
+      el.onclick = () => toggle(n);
+      d.appendChild(el);
+    });
+  }
+  document.getElementById('sel-count').textContent = selected.length;
+  document.getElementById('min-warn').style.display = selected.length > 0 && selected.length < 10 ? '' : 'none';
+  document.getElementById('gen-btn').disabled = selected.length < 10;
+  updateComboInfo();
+}
+
+function clearSel() {
+  selected = [];
+  document.querySelectorAll('.nb').forEach(b => b.classList.remove('sel'));
+  updateSelDisplay();
+  document.getElementById('grilles-result-section').style.display = 'none';
+  generatedGrids = [];
+}
+
+function randomSel(count = null) {
+  clearSel();
+  const n = count || (Math.floor(Math.random() * 11) + 10); // 10–20 by default
+  const pool = Array.from({length: 90}, (_, i) => i + 1);
+  while (selected.length < n) {
+    const idx = Math.floor(Math.random() * pool.length);
+    const num = pool.splice(idx, 1)[0];
+    selected.push(num);
+    document.getElementById('n' + num).classList.add('sel');
+  }
+  updateSelDisplay();
+}
+
+// ========== COMBOS ==========
+function comb(n, k) {
+  if (k > n) return 0;
+  if (k === 0 || k === n) return 1;
+  let result = 1;
+  for (let i = 0; i < k; i++) result = result * (n - i) / (i + 1);
+  return Math.round(result);
+}
+
+function updateComboInfo() {
+  const n = selected.length;
+  const nb = parseInt(document.getElementById('nb-grilles-select').value);
+  const badge = document.getElementById('combo-badge');
+  if (n < 10) { badge.textContent = 'Combos possibles: —'; return; }
+  const total = comb(n, 5);
+  if (total <= 1000) {
+    badge.textContent = `${total.toLocaleString('fr-FR')} combos possibles`;
+  } else {
+    badge.textContent = `${total.toLocaleString('fr-FR')} combos | ${nb} à générer`;
+  }
+}
+
+// ========== MODE ==========
+function setMode(m) {
+  currentMode = m;
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('mode-' + m).classList.add('active');
+}
+
+// ========== GENERATE ==========
+function generateGrids() {
+  if (selected.length < 5) return;
+  const nb = parseInt(document.getElementById('nb-grilles-select').value);
+  const pool = [...selected].sort((a, b) => a - b);
+  const totalCombos = comb(pool.length, 5);
+  const toGenerate = Math.min(nb, totalCombos);
+
+  generatedGrids = [];
+  const seen = new Set();
+
+  if (currentMode === 'balanced') {
+    generatedGrids = generateBalanced(pool, toGenerate);
+  } else if (currentMode === 'unique') {
+    generatedGrids = generateUnique(pool, toGenerate);
+  } else {
+    // random
+    let attempts = 0;
+    while (generatedGrids.length < toGenerate && attempts < 50000) {
+      attempts++;
+      const g = randomCombo(pool);
+      const key = g.join('-');
+      if (!seen.has(key)) { seen.add(key); generatedGrids.push(g); }
+    }
+  }
+
+  currentPage = 0;
+  renderGrids();
+  document.getElementById('grilles-result-section').style.display = 'block';
+  setTimeout(() => document.getElementById('grilles-result-section').scrollIntoView({behavior:'smooth',block:'start'}), 100);
+  updateTirageTab();
+}
+
+function randomCombo(pool) {
+  const p = [...pool];
+  const res = [];
+  while (res.length < 5) {
+    const i = Math.floor(Math.random() * p.length);
+    res.push(p.splice(i, 1)[0]);
+  }
+  return res.sort((a, b) => a - b);
+}
+
+function generateBalanced(pool, nb) {
+  // Spread numbers evenly across the pool
+  const result = [];
+  const seen = new Set();
+  const freq = {};
+  pool.forEach(n => freq[n] = 0);
+
+  let attempts = 0;
+  while (result.length < nb && attempts < 100000) {
+    attempts++;
+    // Weight by inverse frequency
+    const weights = pool.map(n => 1 / (freq[n] + 1));
+    const totalW = weights.reduce((a, b) => a + b, 0);
+    const combo = [];
+    const tempPool = [...pool];
+    const tempWeights = [...weights];
+    for (let i = 0; i < 5; i++) {
+      let r = Math.random() * tempWeights.reduce((a,b)=>a+b,0);
+      let idx = 0;
+      while (r > tempWeights[idx] && idx < tempWeights.length - 1) { r -= tempWeights[idx]; idx++; }
+      combo.push(tempPool[idx]);
+      tempPool.splice(idx, 1); tempWeights.splice(idx, 1);
+    }
+    combo.sort((a, b) => a - b);
+    const key = combo.join('-');
+    if (!seen.has(key)) {
+      seen.add(key);
+      combo.forEach(n => freq[n]++);
+      result.push(combo);
+    }
+  }
+  return result;
+}
+
+function generateUnique(pool, nb) {
+  // Maximize unique numbers across all grids
+  const result = [];
+  const seen = new Set();
+  const globalUsed = {};
+  pool.forEach(n => globalUsed[n] = 0);
+
+  let attempts = 0;
+  while (result.length < nb && attempts < 100000) {
+    attempts++;
+    // Sort pool by least used
+    const sorted = [...pool].sort((a, b) => (globalUsed[a] || 0) - (globalUsed[b] || 0));
+    const combo = sorted.slice(0, 5 + Math.floor(Math.random() * 3));
+    const picked = randomCombo(combo.slice(0, Math.min(combo.length, 8)));
+    picked.sort((a, b) => a - b);
+    const key = picked.join('-');
+    if (!seen.has(key)) {
+      seen.add(key);
+      picked.forEach(n => globalUsed[n]++);
+      result.push(picked);
+    }
+  }
+  return result;
+}
+
+function renderGrids() {
+  const list = document.getElementById('grilles-list');
+  const total = generatedGrids.length;
+  const start = currentPage * PAGE_SIZE;
+  const end = Math.min(start + PAGE_SIZE, total);
+  const pageGrids = generatedGrids.slice(start, end);
+
+  list.innerHTML = '';
+  pageGrids.forEach((g, idx) => {
+    const realIdx = start + idx;
+    const div = document.createElement('div');
+    div.className = 'grille-item';
+    div.innerHTML = `
+      <div class="grille-num">#${realIdx + 1}</div>
+      <div class="grille-balls">${g.map(n => `<div class="gball">${n}</div>`).join('')}</div>
+      <div class="grille-actions">
+        <button class="icon-btn" title="Copier" onclick="copyGrid(${realIdx})">📋</button>
+        <button class="icon-btn" title="Régénérer cette grille" onclick="regenGrid(${realIdx})">🔄</button>
+      </div>
+    `;
+    list.appendChild(div);
+  });
+
+  // Summary
+  const allNums = generatedGrids.flat();
+  const uniqueNums = new Set(allNums).size;
+  document.getElementById('gen-summary').innerHTML = `
+    <div class="sumb"><div class="v">${total}</div><div class="l">Grilles</div></div>
+    <div class="sumb"><div class="v">${total * 5}</div><div class="l">Numéros joués</div></div>
+    <div class="sumb"><div class="v">${uniqueNums}</div><div class="l">Numéros uniques</div></div>
+    <div class="sumb"><div class="v">${selected.length}</div><div class="l">Dans votre base</div></div>
+  `;
+
+  renderPagination(total);
+}
+
+function renderPagination(total) {
+  const pages = Math.ceil(total / PAGE_SIZE);
+  const pg = document.getElementById('pagination');
+  pg.innerHTML = '';
+  if (pages <= 1) return;
+  for (let i = 0; i < pages; i++) {
+    const b = document.createElement('button');
+    b.className = 'page-btn' + (i === currentPage ? ' active' : '');
+    b.textContent = i + 1;
+    b.onclick = () => { currentPage = i; renderGrids(); };
+    pg.appendChild(b);
+  }
+}
+
+function copyGrid(idx) {
+  const g = generatedGrids[idx];
+  navigator.clipboard.writeText(`Grille ${idx+1}: ${g.join(' - ')}`).catch(()=>{});
+}
+
+function copyAllGrids() {
+  const text = generatedGrids.map((g, i) => `Grille ${i+1}: ${g.join(' - ')}`).join('\n');
+  navigator.clipboard.writeText(text).catch(()=>{});
+}
+
+function shuffleGrids() {
+  for (let i = generatedGrids.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [generatedGrids[i], generatedGrids[j]] = [generatedGrids[j], generatedGrids[i]];
+  }
+  currentPage = 0;
+  renderGrids();
+}
+
+function regenGrid(idx) {
+  const pool = [...selected].sort((a, b) => a - b);
+  const seen = new Set(generatedGrids.map(g => g.join('-')));
+  let attempts = 0;
+  while (attempts < 10000) {
+    attempts++;
+    const g = randomCombo(pool);
+    const key = g.join('-');
+    if (!seen.has(key)) {
+      generatedGrids[idx] = g;
+      break;
+    }
+  }
+  renderGrids();
+}
+
+// ========== SAISIE TIRAGE OFFICIEL ==========
+let cumulData = JSON.parse(localStorage.getItem('loto590_cumul') || '{}');
+let cumulView = 'grille';
+
+function initBallInputs() {
+  for (let i = 0; i < 5; i++) {
+    const inp = document.getElementById('bi' + i);
+    inp.addEventListener('input', () => onBallInput(i));
+    inp.addEventListener('keydown', (e) => onBallKey(e, i));
+    inp.addEventListener('focus', () => { inp.select(); });
+  }
+}
+
+function onBallInput(idx) {
+  const inp = document.getElementById('bi' + idx);
+  let val = inp.value.replace(/[^0-9]/g, '');
+  // Max 2 chars
+  if (val.length > 2) val = val.slice(0, 2);
+  inp.value = val;
+
+  const num = parseInt(val);
+  inp.classList.remove('filled', 'error');
+
+  if (val.length === 2 || (val.length === 1 && num >= 10)) {
+    // validate range
+    if (num < 1 || num > 90) {
+      inp.classList.add('error');
+      setTimeout(() => inp.classList.remove('error'), 600);
+      document.getElementById('saisie-error').textContent = `⚠ Le numéro ${num} est hors plage (1–90)`;
+      return;
+    }
+    inp.classList.add('filled');
+    document.getElementById('saisie-error').textContent = '';
+    // Move to next
+    if (idx < 4) {
+      setTimeout(() => document.getElementById('bi' + (idx + 1)).focus(), 80);
+    }
+  }
+  checkSaisieComplete();
+}
+
+function onBallKey(e, idx) {
+  if (e.key === 'Backspace' && document.getElementById('bi' + idx).value === '' && idx > 0) {
+    document.getElementById('bi' + (idx - 1)).focus();
+  }
+  if (e.key === 'ArrowRight' && idx < 4) document.getElementById('bi' + (idx + 1)).focus();
+  if (e.key === 'ArrowLeft' && idx > 0) document.getElementById('bi' + (idx - 1)).focus();
+}
+
+function checkSaisieComplete() {
+  let ok = true;
+  const vals = [];
+  for (let i = 0; i < 5; i++) {
+    const v = parseInt(document.getElementById('bi' + i).value);
+    if (!v || v < 1 || v > 90) { ok = false; break; }
+    vals.push(v);
+  }
+  // Check duplicates
+  if (ok && new Set(vals).size < 5) {
+    document.getElementById('saisie-error').textContent = '⚠ Tous les numéros doivent être différents';
+    ok = false;
+  }
+  document.getElementById('valider-btn').disabled = !ok;
+  if (ok) document.getElementById('saisie-error').textContent = '';
+}
+
+function clearSaisie() {
+  for (let i = 0; i < 5; i++) {
+    const inp = document.getElementById('bi' + i);
+    inp.value = '';
+    inp.classList.remove('filled', 'error');
+  }
+  document.getElementById('saisie-error').textContent = '';
+  document.getElementById('valider-btn').disabled = true;
+  document.getElementById('tirage-result-wrap').style.display = 'none';
+  document.getElementById('bi0').focus();
+}
+
+async function validerTirage() {
+  const drawn = [];
+  for (let i = 0; i < 5; i++) {
+    drawn.push(parseInt(document.getElementById('bi' + i).value));
+  }
+  drawn.sort((a, b) => a - b);
+
+  // Update cumul
+  drawn.forEach(n => {
+    cumulData[n] = (cumulData[n] || 0) + 1;
+  });
+  localStorage.setItem('loto590_cumul', JSON.stringify(cumulData));
+  renderCumul();
+
+  // Show results
+  document.getElementById('tirage-result-wrap').style.display = 'block';
+  setTimeout(() => document.getElementById('tirage-result-wrap').scrollIntoView({behavior:'smooth',block:'start'}), 80);
+
+  // Animate drawn balls
+  const dballs = document.getElementById('tirage-drawn-balls');
+  dballs.innerHTML = '';
+  for (let i = 0; i < drawn.length; i++) {
+    await sleep(220);
+    const el = document.createElement('div');
+    el.className = 'drawn-ball gb';
+    el.textContent = drawn[i];
+    el.style.animationDelay = '0s';
+    dballs.appendChild(el);
+  }
+
+  await sleep(300);
+
+  // Check grids
+  const resultsDiv = document.getElementById('tirage-grilles-results');
+  resultsDiv.innerHTML = '';
+  const preview = document.getElementById('tirage-grilles-preview');
+
+  if (generatedGrids.length === 0) {
+    preview.innerHTML = `<div style="color:var(--muted);font-size:13px;padding:10px;text-align:center">💡 Générez des grilles dans l'onglet Générateur pour les vérifier ici.</div>`;
+  } else {
+    preview.innerHTML = '';
+    let totalWins = 0, bestHits = 0, totalPaires = 0;
+    generatedGrids.forEach((g, idx) => {
+      const hitsCount = g.filter(n => drawn.includes(n)).length;
+      if (hitsCount >= 2) totalWins++;
+      if (hitsCount > bestHits) bestHits = hitsCount;
+      const {label, cls, paires} = getRank(hitsCount);
+      totalPaires += paires;
+      const winClass = getWinItemClass(hitsCount);
+      const trophy = getTrophy(hitsCount);
+      const div = document.createElement('div');
+      div.className = `grille-item ${winClass}`;
+      div.style.animation = `fadeUp .3s ease ${idx * 0.05}s both`;
+      div.innerHTML = `
+        ${trophy ? `<div class="grille-trophy">${trophy}</div>` : ''}
+        <div class="grille-num">#${idx+1}</div>
+        <div class="grille-balls">${g.map(n => `<div class="gball${drawn.includes(n)?' highlight':''}">${n}</div>`).join('')}</div>
+        <div class="grille-result ${cls}">${label} <span style="opacity:.7;font-size:11px">(${hitsCount}/5)</span></div>
+      `;
+      resultsDiv.appendChild(div);
+    });
+    const {label: bestLabel} = getRank(bestHits);
+    document.getElementById('tirage-summary').innerHTML = `
+      <div class="sumb"><div class="v">${generatedGrids.length}</div><div class="l">Grilles jouées</div></div>
+      <div class="sumb"><div class="v">${totalWins}</div><div class="l">Grilles gagnantes</div></div>
+      <div class="sumb"><div class="v" style="color:#4ade80">${totalPaires}</div><div class="l">Paires totales</div></div>
+      <div class="sumb"><div class="v" style="font-size:13px;line-height:1.2">${bestLabel}</div><div class="l">Meilleur rang</div></div>
+    `;
+    if (bestHits >= 2) confetti(bestHits === 5 ? 100 : bestHits * 14);
+  }
+
+  // Save history
+  const entry = {
+    date: new Date().toLocaleString('fr-FR'),
+    selected: [...selected].sort((a,b)=>a-b),
+    drawn,
+    grids: generatedGrids.map(g => ({nums: g, hits: g.filter(n => drawn.includes(n)).length})),
+    totalWins: generatedGrids.filter(g => g.filter(n=>drawn.includes(n)).length >= 1).length,
+    bestHits: generatedGrids.reduce((a,g) => Math.max(a, g.filter(n=>drawn.includes(n)).length), 0)
+  };
+  history.unshift(entry);
+  localStorage.setItem('loto590v2_history', JSON.stringify(history.slice(0, 200)));
+  renderStats();
+}
+
+function updateTirageTab() {
+  // Focus first input
+  setTimeout(() => {
+    const inp = document.getElementById('bi0');
+    if (inp) inp.focus();
+  }, 100);
+}
+
+// ========== COMPTEUR CUMULATIF ==========
+function buildCumulGrid() {
+  const grid = document.getElementById('cumul-grid');
+  grid.innerHTML = '';
+  for (let i = 1; i <= 90; i++) {
+    const cell = document.createElement('div');
+    cell.className = 'cumul-cell';
+    cell.id = 'cc' + i;
+    cell.innerHTML =
+      '<div class="cc-num">' + i + '</div>' +
+      '<div class="cc-count">0</div>' +
+      '<div class="cc-temp"></div>' +
+      '<div class="cc-bar-wrap"><div class="cc-bar" style="width:0%"></div></div>';
+    grid.appendChild(cell);
+  }
+}
+
+function renderCumul() {
+  const counts = Object.entries(cumulData).map(([n,c]) => ({n: parseInt(n), c}));
+  const totalTirages = Object.values(cumulData).length === 0
+    ? 0
+    : Math.round(Object.values(cumulData).reduce((a,b)=>a+b,0) / 5);
+  const maxCount = Math.max(...Object.values(cumulData), 1);
+  const sorted = [...counts].sort((a,b) => b.c - a.c);
+  const top10 = new Set(sorted.slice(0,10).map(x=>x.n));
+  const top25 = new Set(sorted.slice(0,25).map(x=>x.n));
+  const hasCnt = new Set(counts.filter(x=>x.c>0).map(x=>x.n));
+
+  document.getElementById('cumul-total-badge').textContent = `${totalTirages} tirage(s) officiel(s)`;
+
+  for (let i = 1; i <= 90; i++) {
+    const cell = document.getElementById('cc' + i);
+    if (!cell) continue;
+    const cnt = cumulData[i] || 0;
+    cell.querySelector('.cc-count').textContent = cnt;
+    cell.querySelector('.cc-bar').style.width = (maxCount > 0 ? Math.round(cnt / maxCount * 100) : 0) + '%';
+    cell.className = 'cumul-cell';
+    if (cnt > 0) {
+      cell.classList.add('has-count');
+      if (top10.has(i))       cell.classList.add('hot');
+      else if (top25.has(i))  cell.classList.add('lukewarm');
+      else                    cell.classList.add('cold');
+    }
+  }
+
+  // Top list with hot/lukewarm/cold color
+  const topList = document.getElementById('cumul-top-list');
+  if (sorted.length === 0) {
+    topList.innerHTML = '<div class="empty"><div class="icon">📊</div>Aucun tirage encore saisi.</div>';
+  } else {
+    topList.innerHTML = sorted.slice(0, 30).map((item, idx) => {
+      const isHot = idx < 10;
+      const isWarm = idx >= 10 && idx < 25;
+      const isCold = idx >= 25;
+      const emoji = isHot ? '🔥' : isWarm ? '🌤' : '❄';
+      const barColor = isHot ? 'linear-gradient(90deg,#ff6b35,#ff3d00)'
+                     : isWarm ? 'linear-gradient(90deg,#f0b429,#ff9d3b)'
+                     : 'linear-gradient(90deg,#3b82f6,#60a5fa)';
+      const numColor = isHot ? '#ff6b35' : isWarm ? '#f0b429' : '#7eb3f7';
+      return `
+        <div class="top-item">
+          <div class="top-rank">${idx+1}</div>
+          <div style="font-size:16px">${emoji}</div>
+          <div class="top-ball" style="background:radial-gradient(circle at 35% 30%,#fff,${numColor} 60%,#000a);color:#080c14">${item.n}</div>
+          <div class="top-bar-wrap"><div class="top-bar" style="width:${Math.round(item.c/maxCount*100)}%;background:${barColor}"></div></div>
+          <div class="top-count" style="color:${numColor}">${item.c}</div>
+        </div>
+      `;
+    }).join('');
+  }
+  refreshGridTemps();
+}
+
+function setCumulView(v) {
+  cumulView = v;
+  document.getElementById('vt-grille').classList.toggle('active', v === 'grille');
+  document.getElementById('vt-top').classList.toggle('active', v === 'top');
+  document.getElementById('cumul-view-grille').style.display = v === 'grille' ? '' : 'none';
+  document.getElementById('cumul-view-top').style.display = v === 'top' ? '' : 'none';
+}
+
+function resetCumul() {
+  // Confirmation inline (confirm() peut ne pas fonctionner dans certains contextes)
+  const btn = document.querySelector('#panel-cumul .btn-red');
+  if (btn && btn.dataset.confirm !== 'yes') {
+    btn.textContent = '⚠️ Confirmer ?';
+    btn.dataset.confirm = 'yes';
+    setTimeout(() => {
+      btn.textContent = '🗑 Réinitialiser';
+      btn.dataset.confirm = '';
+    }, 3000);
+    return;
+  }
+  if (btn) { btn.textContent = '🗑 Réinitialiser'; btn.dataset.confirm = ''; }
+
+  // 1. Vider les données
+  cumulData = {};
+  localStorage.setItem('loto590_cumul', '{}');
+
+  // 2. Reconstruire la grille directement dans le conteneur
+  const grid = document.getElementById('cumul-grid');
+  if (grid) {
+    grid.innerHTML = '';
+    for (let i = 1; i <= 90; i++) {
+      const cell = document.createElement('div');
+      cell.className = 'cumul-cell';
+      cell.id = 'cc' + i;
+      cell.innerHTML =
+        '<div class="cc-num">' + i + '</div>' +
+        '<div class="cc-count">0</div>' +
+        '<div class="cc-temp"></div>' +
+        '<div class="cc-bar-wrap"><div class="cc-bar" style="width:0%"></div></div>';
+      grid.appendChild(cell);
+    }
+  }
+
+  // 3. Remettre le badge à zéro
+  const badge = document.getElementById('cumul-total-badge');
+  if (badge) badge.textContent = '0 tirage(s) officiel(s)';
+
+  // 4. Vider le top list
+  const topList = document.getElementById('cumul-top-list');
+  if (topList) topList.innerHTML = '<div class="empty"><div class="icon">📊</div>Aucun tirage encore saisi.</div>';
+}
+
+function exportCumul() {
+  const sorted = Object.entries(cumulData).sort((a,b)=>b[1]-a[1]);
+  if (sorted.length === 0) return;
+  const text = 'Top numéros (tirages officiels):\n' +
+    sorted.map(([n,c]) => `N°${n}: ${c} fois`).join('\n');
+  navigator.clipboard.writeText(text).catch(()=>{});
+}
+
+function getRank(hits) {
+  if (hits === 5) return {label: '🏆 JACKPOT — 10 paires', cls: 'gr-jackpot', paires: 10};
+  if (hits === 4) return {label: '🥇 Rang 1 — 6 paires',   cls: 'gr-win4',    paires: 6};
+  if (hits === 3) return {label: '🥈 Rang 2 — 3 paires',   cls: 'gr-win3',    paires: 3};
+  if (hits === 2) return {label: '🥉 Rang 3 — 1 paire',    cls: 'gr-win2',    paires: 1};
+  if (hits === 1) return {label: '⬜ 1 bon numéro — 0 paire', cls: 'gr-win1', paires: 0};
+  return          {label: '❌ Perdu — 0 paire',             cls: 'gr-lose',    paires: 0};
+}
+
+function getWinItemClass(hits) {
+  if (hits === 5) return 'win-jackpot';
+  if (hits === 4) return 'win-4';
+  if (hits === 3) return 'win-3';
+  if (hits === 2) return 'win-2';
+  if (hits === 1) return 'win-1';
+  return 'lose';
+}
+
+function getTrophy(hits) {
+  if (hits === 5) return '🏆';
+  if (hits === 4) return '🥇';
+  if (hits === 3) return '🥈';
+  if (hits === 2) return '🥉';
+  if (hits === 1) return '🎈';
+  return null;
+}
+
+// ========== HISTORY ==========
+function renderHistory() {
+  const el = document.getElementById('history-list');
+  if (history.length === 0) {
+    el.innerHTML = '<div class="empty"><div class="icon">🎱</div>Aucun tirage encore.</div>';
+    return;
+  }
+  el.innerHTML = history.slice(0, 50).map(h => `
+    <div class="history-item">
+      <div class="history-meta">
+        <span>${h.date}</span>
+        <span>${h.grids.length} grille(s) — ${h.totalWins} gagnante(s)</span>
+      </div>
+      <div class="h-row">
+        <div class="h-label">Tirage</div>
+        <div class="h-balls">${h.drawn.map(n => `<div class="hb m">${n}</div>`).join('')}</div>
+      </div>
+      <div class="history-grilles">
+        ${h.grids.slice(0,5).map((g,i) => `
+          <div class="hg-item">
+            <div class="hg-label">#${i+1}</div>
+            <div class="h-balls">${g.nums.map(n => `<div class="hb m${h.drawn.includes(n)?' hit':''}">${n}</div>`).join('')}</div>
+            <span style="font-size:11px;color:var(--muted);margin-left:6px">${g.hits}/5</span>
+          </div>
+        `).join('')}
+        ${h.grids.length > 5 ? `<div style="font-size:11px;color:var(--muted)">…+${h.grids.length-5} autres</div>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+function clearHistory() {
+  const btn = document.querySelector('#panel-history .btn-red');
+  if (btn && btn.dataset.confirm !== 'yes') {
+    btn.textContent = '⚠️ Confirmer ?';
+    btn.dataset.confirm = 'yes';
+    setTimeout(() => {
+      btn.textContent = '🗑 Effacer l\'historique';
+      btn.dataset.confirm = '';
+    }, 3000);
+    return;
+  }
+  if (btn) { btn.textContent = '🗑 Effacer l\'historique'; btn.dataset.confirm = ''; }
+  history = [];
+  localStorage.setItem('loto590v2_history', '[]');
+  renderHistory();
+  renderStats();
+}
+
+// ========== STATS ==========
+function renderStats() {
+  const sessions = history.length;
+  const totalGrids = history.reduce((a, h) => a + h.grids.length, 0);
+  const totalWins = history.reduce((a, h) => a + h.totalWins, 0);
+  const best = history.reduce((a, h) => Math.max(a, h.bestHits), 0);
+  document.getElementById('st-sessions').textContent = sessions;
+  document.getElementById('st-grilles').textContent = totalGrids;
+  document.getElementById('st-wins').textContent = totalWins;
+  document.getElementById('st-best').textContent = best > 0 ? getRank(best).label : '—';
+
+  const freq = {};
+  history.forEach(h => h.drawn.forEach(n => { freq[n] = (freq[n] || 0) + 1; }));
+  const sorted = Object.entries(freq).sort((a, b) => b[1] - a[1]).slice(0, 12);
+  const fl = document.getElementById('freq-list');
+  if (!sorted.length) {
+    fl.innerHTML = '<div class="empty"><div class="icon">📈</div>Jouez pour voir les fréquences !</div>';
+    return;
+  }
+  const max = sorted[0][1];
+  fl.innerHTML = sorted.map(([n, c]) => `
+    <div class="freq-bar-row">
+      <div class="freq-num">${n}</div>
+      <div class="freq-bar-bg"><div class="freq-bar" style="width:${Math.round(c/max*100)}%"></div></div>
+      <div class="freq-count">${c}×</div>
+    </div>
+  `).join('');
+}
+
+// ========== CONFETTI ==========
+function confetti(count = 40) {
+  const wrap = document.getElementById('confetti');
+  const colors = ['#f0b429','#ff9d3b','#22c55e','#3b82f6','#fff','#ef4444'];
+  for (let i = 0; i < count; i++) {
+    setTimeout(() => {
+      const c = document.createElement('div');
+      c.className = 'confetto';
+      c.style.left = Math.random() * 100 + 'vw';
+      c.style.background = colors[Math.floor(Math.random() * colors.length)];
+      c.style.width = (5 + Math.random() * 9) + 'px';
+      c.style.height = (5 + Math.random() * 9) + 'px';
+      c.style.animationDuration = (1.5 + Math.random() * 2) + 's';
+      c.style.animationDelay = Math.random() * 0.6 + 's';
+      wrap.appendChild(c);
+      setTimeout(() => c.remove(), 4000);
+    }, i * 22);
+  }
+}
+
+// ========== TABS ==========
+function switchTab(name, el) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  el.classList.add('active');
+  if (name === 'history') renderHistory();
+  if (name === 'stats') renderStats();
+  if (name === 'tirage') updateTirageTab();
+  if (name === 'cumul') renderCumul();
+  if (name === 'ecart') renderEcarts();
+  if (name === 'mise') initMise();
+  if (name === 'predict') initPredict();
+}
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+const fadeStyle = document.createElement('style');
+fadeStyle.textContent = '@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}';
+document.head.appendChild(fadeStyle);
+
+// ========== ÉCARTS ==========
+function getEcarts() {
+  // Build last-seen tirage index for each number
+  const tirages = history.map(h => h.drawn);
+  const lastSeen = {}; // num -> index (0 = most recent)
+  for (let i = 1; i <= 90; i++) lastSeen[i] = null;
+  tirages.forEach((drawn, idx) => {
+    drawn.forEach(n => {
+      if (lastSeen[n] === null) lastSeen[n] = idx;
+    });
+  });
+  // ecart = tirages since last seen (null = never)
+  const ecarts = {};
+  for (let i = 1; i <= 90; i++) {
+    ecarts[i] = lastSeen[i] === null ? null : lastSeen[i];
+  }
+  return { ecarts, total: tirages.length };
+}
+
+function renderEcarts() {
+  const { ecarts, total } = getEcarts();
+  if (total < 2) {
+    document.getElementById('ecart-empty').style.display = '';
+    document.getElementById('ecart-content').style.display = 'none';
+    return;
+  }
+  document.getElementById('ecart-empty').style.display = 'none';
+  document.getElementById('ecart-content').style.display = '';
+
+  const grid = document.getElementById('ecart-grid');
+  grid.innerHTML = '';
+
+  // Thresholds
+  const avgEcart = total / 18; // 90 numbers / 5 per draw
+
+  for (let i = 1; i <= 90; i++) {
+    const e = ecarts[i];
+    const cell = document.createElement('div');
+    cell.className = 'ecart-cell';
+    let cls = 'ec-never', label = '—';
+    if (e === null) { cls = 'ec-never'; label = '—'; }
+    else if (e === 0) { cls = 'ec-hot'; label = '✓'; }
+    else if (e <= Math.round(avgEcart)) { cls = 'ec-warm'; label = e; }
+    else if (e <= Math.round(avgEcart * 2)) { cls = 'ec-late'; label = e; }
+    else { cls = 'ec-overdue'; label = e; }
+    cell.classList.add(cls);
+    cell.innerHTML = '<div class="ec-num">' + i + '</div><div class="ec-val">' + label + '</div>';
+    grid.appendChild(cell);
+  }
+
+  // Top 10 most overdue
+  const sorted = Object.entries(ecarts)
+    .filter(([,e]) => e !== null)
+    .sort((a,b) => b[1] - a[1])
+    .slice(0, 10);
+
+  document.getElementById('ecart-top').innerHTML = sorted.map(([n, e], idx) => `
+    <div class="ecart-top-item">
+      <div class="et-rank">${idx+1}</div>
+      <div class="et-ball">${n}</div>
+      <div class="et-info">
+        <div class="et-num">Numéro ${n}</div>
+        <div class="et-sub">Absent depuis ${e} tirage(s)</div>
+      </div>
+      <div class="et-ecart">${e}</div>
+    </div>
+  `).join('');
+}
+
+// ========== MISES ==========
+const GAINS_PAR_PAIRE = 300; // FCFA par paire (configurable)
+
+function initMise() {
+  const nb = generatedGrids.length || parseInt(document.getElementById('mise-nb-grilles')?.value) || 5;
+  const miseNb = document.getElementById('mise-nb-grilles');
+  if (miseNb && generatedGrids.length > 0) miseNb.value = generatedGrids.length;
+}
+
+function calculerMise() {
+  const mise = parseInt(document.getElementById('mise-par-grille').value) || 200;
+  const nb = parseInt(document.getElementById('mise-nb-grilles').value) || 5;
+  const total = mise * nb;
+
+  document.getElementById('mise-result').style.display = '';
+  document.getElementById('mise-summary').innerHTML = `
+    <div class="sumb"><div class="v">${nb}</div><div class="l">Grilles</div></div>
+    <div class="sumb"><div class="v">${mise.toLocaleString('fr-FR')}</div><div class="l">Mise/grille (FCFA)</div></div>
+    <div class="sumb"><div class="v" style="color:#f87171">${total.toLocaleString('fr-FR')}</div><div class="l">Coût total (FCFA)</div></div>
+    <div class="sumb"><div class="v" style="color:#4ade80">${(GAINS_PAR_PAIRE * 10 * nb).toLocaleString('fr-FR')}</div><div class="l">Jackpot max (FCFA)</div></div>
+  `;
+
+  const rangs = [
+    { icon:'🏆', label:'JACKPOT', hits:5, paires:10 },
+    { icon:'🥇', label:'Rang 1',  hits:4, paires:6  },
+    { icon:'🥈', label:'Rang 2',  hits:3, paires:3  },
+    { icon:'🥉', label:'Rang 3',  hits:2, paires:1  },
+    { icon:'⬜', label:'1 numéro',hits:1, paires:0  },
+  ];
+
+  document.getElementById('gains-table').innerHTML = rangs.map(r => {
+    const gain = r.paires * GAINS_PAR_PAIRE * nb;
+    const cls = r.hits === 5 ? 'jackpot' : r.hits === 4 ? 'rank1' : '';
+    const profit = gain - total;
+    const profitStr = profit >= 0
+      ? '<span style="color:#4ade80">+' + profit.toLocaleString('fr-FR') + '</span>'
+      : '<span style="color:#f87171">' + profit.toLocaleString('fr-FR') + '</span>';
+    return `
+      <div class="gain-row ${cls}">
+        <div class="gain-icon">${r.icon}</div>
+        <div class="gain-label">
+          <div style="font-weight:600">${r.label} — ${r.hits}/5</div>
+          <div style="font-size:11px;color:var(--muted)">Profit net : ${profitStr} FCFA</div>
+        </div>
+        <div class="gain-paires">${r.paires} paire(s)</div>
+        <div class="gain-amount">${gain.toLocaleString('fr-FR')}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ========== PRÉDICTION ==========
+let predictMode = 'freq';
+
+const PREDICT_DESCS = {
+  freq: '📊 Fréquence : sélectionne les numéros les plus souvent tirés dans l\'historique officiel.',
+  ecart: '📐 Écarts : sélectionne les numéros absents depuis le plus longtemps (numéros "en retard").',
+  mix: '⚡ Mixte : combine fréquence élevée ET grand écart pour cibler les numéros "chauds mais rares".'
+};
+
+function setPredictMode(m, el) {
+  predictMode = m;
+  document.querySelectorAll('.ptab').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('predict-desc').textContent = PREDICT_DESCS[m];
+  document.getElementById('predict-balls').innerHTML = '';
+  document.getElementById('predict-grilles').innerHTML = '';
+}
+
+function initPredict() {
+  const total = history.length;
+  document.getElementById('predict-empty').style.display = total < 5 ? '' : 'none';
+  document.getElementById('predict-content').style.display = total < 5 ? 'none' : '';
+  document.getElementById('predict-desc').textContent = PREDICT_DESCS[predictMode];
+}
+
+function runPredict() {
+  const tirages = history.map(h => h.drawn);
+  if (tirages.length < 5) return;
+
+  // Fréquences
+  const freq = {};
+  for (let i = 1; i <= 90; i++) freq[i] = 0;
+  tirages.forEach(d => d.forEach(n => freq[n]++));
+
+  // Écarts
+  const ecarts = {};
+  for (let i = 1; i <= 90; i++) ecarts[i] = null;
+  tirages.forEach((d, idx) => d.forEach(n => { if (ecarts[n] === null) ecarts[n] = idx; }));
+  for (let i = 1; i <= 90; i++) if (ecarts[i] === null) ecarts[i] = tirages.length;
+
+  let scored = [];
+  if (predictMode === 'freq') {
+    scored = Object.entries(freq).sort((a,b) => b[1]-a[1]);
+  } else if (predictMode === 'ecart') {
+    scored = Object.entries(ecarts).sort((a,b) => b[1]-a[1]);
+  } else {
+    // Mix: normalize both and combine
+    const maxF = Math.max(...Object.values(freq), 1);
+    const maxE = Math.max(...Object.values(ecarts).filter(x=>x!==null), 1);
+    scored = Object.entries(freq).map(([n,f]) => {
+      const score = (f/maxF)*0.5 + (ecarts[parseInt(n)]/maxE)*0.5;
+      return [n, score];
+    }).sort((a,b) => b[1]-a[1]);
+  }
+
+  // Top 25 pool → generate 5 grilles of 5
+  const pool = scored.slice(0, 25).map(([n]) => parseInt(n));
+  const container = document.getElementById('predict-balls');
+  container.innerHTML = '';
+  pool.slice(0, 10).forEach((n, i) => {
+    const el = document.createElement('div');
+    el.className = 'pball suggested';
+    el.textContent = n;
+    el.style.animationDelay = (i * 0.06) + 's';
+    container.appendChild(el);
+  });
+
+  // Generate 5 grilles from pool
+  const grillesDiv = document.getElementById('predict-grilles');
+  const seen = new Set();
+  const grilles = [];
+  let attempts = 0;
+  while (grilles.length < 5 && attempts < 5000) {
+    attempts++;
+    const g = randomCombo(pool);
+    const key = g.join('-');
+    if (!seen.has(key)) { seen.add(key); grilles.push(g); }
+  }
+
+  grillesDiv.innerHTML = '<div style="font-size:12px;color:var(--muted);margin-bottom:10px;letter-spacing:1px;text-transform:uppercase">🎟 5 grilles suggérées</div>' +
+    grilles.map((g, i) => `
+      <div class="predict-grille-item">
+        <div class="grille-num">#${i+1}</div>
+        <div class="grille-balls">${g.map(n=>`<div class="pball" style="width:34px;height:34px;font-size:13px;animation:none">${n}</div>`).join('')}</div>
+      </div>
+    `).join('');
+}
+
+// ========== BOOT ==========
+buildGrid();
+buildCumulGrid();
+initBallInputs();
+renderCumul();
+refreshGridTemps();
+renderStats();
+
+// ========== SERVICE WORKER ==========
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+</script>
+</body>
+</html>
